@@ -7,6 +7,8 @@
   </small>
 </div><br/>
 
+<img src="https://github.com/HerShe04/Streamline-app/blob/main/assets/design.png" alt="Header photo" >
+
 ## About the Project 
 
 <div align="center">
@@ -23,6 +25,17 @@
 - Utilization of Firebase Authentication, Realtime Database, Storage and Real-time syncing with Firebase for data security and accessibility
 - Simplifying digital tasks and reducing the need for multiple app downloads
 - Enhancing user experience with seamless navigation and convenience
+
+
+
+
+## Design and Prototype
+
+<img src="https://github.com/HerShe04/Streamline-app/blob/main/assets/design.png">
+
+Figma Design: https://bit.ly/48SQ3uR
+
+
 
 <!-- TechStack -->
 ## Tech Stack 
