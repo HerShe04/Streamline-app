@@ -48,8 +48,9 @@ Figma Design: https://bit.ly/48SQ3uR
 
 <!-- Features -->
 ## Roadmap 
-* [ ]  Login/SignUp/Signout
-* [ ]  ToDo with CRUD
+* [ ] Designing
+* [ ] Login/SignUp/Signout
+* [ ] ToDo with CRUD
 * [ ] Create/Scan QRCode
 * [ ] Unit Conversion
 * [ ] FireBase/Firestore Setup 
