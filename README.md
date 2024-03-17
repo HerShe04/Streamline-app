@@ -27,7 +27,6 @@
 <!-- TechStack -->
 ## Tech Stack 
 
-
 -   Language: [TypeScript](https://www.typescriptlang.org/)
 -   Frontend: [React Native](https://reactnative.dev/)
 -   Backend: [Node JS](https://nodejs.org/), [Firebase](https://firebase.google.com/)
