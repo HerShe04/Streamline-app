@@ -48,7 +48,7 @@ Figma Design: https://bit.ly/48SQ3uR
 
 <!-- Features -->
 ## Roadmap 
-* [ ] Designing
+* [x] Designing
 * [ ] Login/SignUp/Signout
 * [ ] ToDo with CRUD
 * [ ] Create/Scan QRCode
