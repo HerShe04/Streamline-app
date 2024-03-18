@@ -49,7 +49,7 @@ Figma Design: https://bit.ly/48SQ3uR
 <!-- Features -->
 ## Roadmap 
 * [x] Designing
-* [ ] Login/SignUp/Signout
+* [x] Login/SignUp/Signout
 * [ ] ToDo with CRUD
 * [ ] Create/Scan QRCode
 * [ ] Unit Conversion
