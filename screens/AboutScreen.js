@@ -35,8 +35,9 @@ export default function AboutScreen({ navigation }) {
 }
 
 AboutScreen.propTypes = {
+    navigation: PropTspes.object.isRequired,
+};
 
-
-    const styles = StyleSheet.create({
-        main_content: {},
-    });
+const styles = StyleSheet.create({
+    main_content: {},
+});
