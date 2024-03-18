@@ -28,17 +28,7 @@ export default function AboutScreen({ navigation }) {
         <View>
             <StatusBar style="auto" />
             <Text style={styles.main_content}>
-                My name is JONAK ADIPTA KALITA. I am a student in Kendriya
-                Vidyalaya Mangaldoi, I am currently studying in standard '8th'.
-                My mom is a Banker and my Dad is a Mathematics Teacher. I am a
-                Coder and also a 'Home Game Developer'. I code for fun but
-                sometimes I also teach some of my colleagues some 'Python'. I
-                love Python and JavaScript the most. I am a Youtuber too. I love
-                to play Games such as NFS, COD, AC, Among Us, GTA, etc. I am a
-                huge fan of Anime and watched 'Pokemon', 'One Piece',
-                'Beyblade', 'DBG'. If you want to get to my Instagram or Github
-                you have to find it by yourself. Actually you'll find my Social
-                Medias in the Social Media Page.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sapien lacus, maximus et nunc at, dignissim posuere magna. Duis cursus vel sem non mollis. Donec vestibulum purus et arcu tempus, et aliquam erat venenatis. Nulla facilisi. Nulla consectetur est nec porta consequat. Proin quis ligula non neque venenatis suscipit in id lacus. Vivamus eget ullamcorper mauris, at ornare velit. Sed efficitur, orci sed ornare dignissim, elit mauris pellentesque arcu, eu elementum augue orci sed velit. Nullam rutrum nisl ac dolor blandit posuere. Etiam at nulla vel libero placerat posuere eu in urna. Donec maximus, dui eu pharetra molestie, quam erat congue felis, ac sodales leo est vitae ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In commodo mollis varius.
             </Text>
         </View>
     );
@@ -49,5 +39,5 @@ AboutScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-	main_content: {},
+    main_content: {},
 });
