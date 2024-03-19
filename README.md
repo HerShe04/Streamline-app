@@ -49,7 +49,7 @@ Figma Design: https://bit.ly/48SQ3uR
 <!-- Features -->
 ## Roadmap 
 * [x] Designing
-* [ ] Login/SignUp/Signout
+* [x] Login/SignUp/Signout
 * [ ] ToDo with CRUD
 * [ ] Create/Scan QRCode
 * [ ] Unit Conversion
@@ -66,6 +66,6 @@ Figma Design: https://bit.ly/48SQ3uR
 This project will be open source once its completed.
 
 ## Team Members
-* Zayn Malik
-* Racoon
-* Me
+* Rahul Karki
+* Nirakar Bogati (Me)
+* Sanish Bal
