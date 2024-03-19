@@ -3,18 +3,18 @@ import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, Input, Text } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
-import { auth, db } from "../../firebase";
-import firebase from "firebase";
+import { auth } from "../../../firebase";
 import PropTypes from "prop-types";
 
-export default function RegisterScreen({ navigation }) {
+export default function RegisterScreenEmail({ navigation }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: "Register!!",
+            title: "Register with Email!!",
+            headerBackTitle: "Back to Login",
             headerLeft: () => (
                 <SafeAreaView style={{ flex: 1 }}>
                     <TouchableOpacity
@@ -40,13 +40,6 @@ export default function RegisterScreen({ navigation }) {
                         "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png",
                 });
             })
-            .then(() =>
-                db.collection("publicNotifications").add({
-                    title: "New member in the Ligtning Family!!",
-                    message: `${email} Joined the Ligtning Family!! Yippie!!`,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                })
-            )
             .catch((error) => alert(error.message));
     };
     return (
@@ -97,7 +90,7 @@ export default function RegisterScreen({ navigation }) {
     );
 }
 
-RegisterScreen.propTypes = {
+RegisterScreenEmail.propTypes = {
     navigation: PropTypes.object.isRequired,
 };
 
