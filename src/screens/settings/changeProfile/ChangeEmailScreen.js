@@ -28,56 +28,8 @@ export default function ChangeEmailScreen({ navigation }) {
                     },
                 ]
             );
-        } else if (email === previousEmail) {
-            Alert.alert(
-                "Value same as Previous!!",
-                "Its the same Email Address as your Previous!!",
-                [
-                    {
-                        text: "OK",
-                        onPress: () => {},
-                    },
-                ]
-            );
-        } else {
-            auth.currentUser
-                .updateEmail(email)
-                .then(() => {
-                    db.collection("privateNotifications").add({
-                        title: "Email Changed Successfully!!",
-                        message: `Your Email has been Successfully Changed to ${email} from ${previousEmail}!!`,
-                        timestamp:
-                            firebase.firestore.FieldValue.serverTimestamp(),
-                        user: auth?.currentUser?.email,
-                    });
-                })
-                .then(() => {
-                    setEmail("");
-                    setPreviousEmail(email);
-                    navigation.jumpTo("Home");
-                })
-                .then(() => {
-                    Alert.alert(
-                        "Email Changed Successfully!!",
-                        "Your Email is Successfully Changed!!",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => {},
-                            },
-                        ]
-                    );
-                })
-                .catch((error) => {
-                    Alert.alert("Error Occured!!", error.message, [
-                        {
-                            text: "OK",
-                            onPress: () => {},
-                        },
-                    ]);
-                });
-        }
-    };
+             
+                     
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Change your Email!!",
