@@ -68,23 +68,6 @@ const HomeStack = () => {
     }
 };
 
-const AuthenticationStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerStyle: { backgroundColor: "#3f7de0" },
-                headerTitleStyle: { color: "white" },
-                headerTintColor: "white",
-                headerBackTitle: "Back",
-                headerTitleAlign: "center",
-            }}
-            initialRouteName="Login"
-        >
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-        </Stack.Navigator>
-    );
-};
 
 const AboutStack = () => {
     return (
@@ -110,6 +93,23 @@ const SettingsStack = () => {
                 name="ChangePhoneNumber"
                 component={ChangePhoneNumberScreen}
             />
+        </Stack.Navigator>
+    );
+};
+const AuthenticationStack = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: { backgroundColor: "#3f7de0" },
+                headerTitleStyle: { color: "white" },
+                headerTintColor: "white",
+                headerBackTitle: "Back",
+                headerTitleAlign: "center",
+            }}
+            initialRouteName="Login"
+        >
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
         </Stack.Navigator>
     );
 };

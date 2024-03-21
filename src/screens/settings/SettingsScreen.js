@@ -9,6 +9,7 @@ import {
     Platform,
     Alert,
 } from "react-native";
+//template used for settingscreen
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { auth, db, storage } from "../../firebase";
 import { Avatar, Button, ListItem } from "react-native-elements";
