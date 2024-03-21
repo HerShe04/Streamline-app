@@ -17,6 +17,20 @@ export default function CustomDrawer({ progress, ...props }) {
         if (darkThemeEnabled) {
             //TODO: Enable Dark Theme
         } else {
+             <Animated.View style={{ transform: [{ translateX }] }}>
+                    <DrawerItemList
+                        {...props}
+                        labelStyle={{ fontSize: 14 }}
+                        activeBackgroundColor="#F1F1F1"
+                        activeTintColor="#000000"
+                        inactiveTintColor="#818181"
+                        itemStyle={{
+                            marginLeft: 10,
+                            paddingHorizontal: 20,
+                            borderRadius: 10,
+                        }}
+                    />
+                </Animated.View>
             //TODO: Disable Dark Theme
         }
     };
