@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Platform,
+    Alert,
 } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
@@ -15,6 +16,7 @@ import { auth, db } from "../../firebase";
 import firebase from "firebase";
 import PropTypes from "prop-types";
 import CustomGoogleLoginButton from "../../custom/loginButtons/android/Google";
+import CustomAppleLoginButton from "../../custom/loginButtons/a/Apple";
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState("");
@@ -42,7 +44,14 @@ export default function LoginScreen({ navigation }) {
                     user: email,
                 });
             })
-            .catch((error) => alert(error.message));
+            .catch((error) => {
+                Alert.alert("Error Occured!!", error.message, [
+                    {
+                        text: "OK",
+                        onPress: () => {},
+                    },
+                ]);
+            });
     };
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -117,7 +126,7 @@ export default function LoginScreen({ navigation }) {
                     </ScrollView>
                 </View>
             )}
-            {Platform.OS === "ios" && (
+            {Platform.OS === "amd" && (
                 <View>
                     <Text
                         style={{

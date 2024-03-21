@@ -15,7 +15,7 @@ export default function NotificationScreen({ navigation }) {
                         style={{ alignItems: "flex-start", margin: 20 }}
                         onPress={navigation.goBack}
                     >
-                        <AntDesign name="arrowleft" size={24} color="black" />
+                        <AntDesign name="arrowleft" size={24} />
                     </TouchableOpacity>
                 </SafeAreaView>
             ),
@@ -24,7 +24,9 @@ export default function NotificationScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
-            <NotificationTopTab />
+            <View style={{ height: "100%" }}>
+                <NotificationTopTab />
+            </View>
         </View>
     );
 }

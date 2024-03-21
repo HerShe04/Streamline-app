@@ -1,8 +1,16 @@
 import React, { useLayoutEffect, useState } from "react";
-import { StyleSheet, View, KeyboardAvoidingView } from "react-native";
+import {
+    StyleSheet,
+    View,
+    SafeAreaView,
+    TouchableOpacity,
+    Alert,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, Input, Text } from "react-native-elements";
-import { auth } from "../firebase";
+import { AntDesign } from "@expo/vector-icons";
+import { auth, db } from "../../firebase";
+import firebase from "firebase";
 import PropTypes from "prop-types";
 
 export default function RegisterScreen({ navigation }) {
@@ -12,7 +20,20 @@ export default function RegisterScreen({ navigation }) {
     const [imageUrl, setImageUrl] = useState("");
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerBackTitle: "Back to Login",
+            title: "Register!!",
+            headerLeft: () => (
+                <SafeAreaView style={{ flex: 1 }}>
+                    <TouchableOpacity
+                        style={{
+                            alignItems: "flex-start",
+                            margin: 20,
+                        }}
+                        onPress={navigation.goBack}
+                    >
+                        <AntDesign name="arrowleft" size={24} color="white" />
+                    </TouchableOpacity>
+                </SafeAreaView>
+            ),
         });
     }, [navigation]);
     const register = () => {
@@ -25,10 +46,32 @@ export default function RegisterScreen({ navigation }) {
                         "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png",
                 });
             })
-            .catch((error) => alert(error.message));
+            .then(() => {
+                db.collection("publicNotifications").add({
+                    title: "New member in the Ligtning Family!!",
+                    message: `${email} Joined the Ligtning Family!! Yippie!!`,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+            })
+            .then(() => {
+                db.collection("privateNotifications").add({
+                    title: "Welcome!!",
+                    message: `Welcome ${email}. Nice to meet!!`,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    user: email,
+                });
+            })
+            .catch((error) => {
+                Alert.alert("Error Occured!!", error.message, [
+                    {
+                        text: "OK",
+                        onPress: () => {},
+                    },
+                ]);
+            });
     };
     return (
-        <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={styles.container}>
             <StatusBar style="auto" />
             <Text h3 style={{ marginBottom: 50 }}>
                 Create an Account
@@ -71,7 +114,7 @@ export default function RegisterScreen({ navigation }) {
                 onPress={register}
                 raised
             />
-        </KeyboardAvoidingView>
+        </View>
     );
 }
 
