@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+    createStackNavigator,
+    StackNavigationOptions,
+} from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import GetStartedScreen from "../screens/GetStartedScreen";
@@ -16,16 +19,27 @@ import RegisterScreen from "../screens/auth/RegisterScreen";
 
 const Stack = createStackNavigator();
 
-const AllStackScreenOption = {
-    headerStyle: { backgroundColor: "#fff" },
-    headerTitleStyle: { color: "black" },
-    headerTintColor: "black",
+const globalStackScreenOptions: StackNavigationOptions = {
     headerBackTitle: "Back",
     headerTitleAlign: "center",
 };
 
+const stackScreenOption1: StackNavigationOptions = {
+    ...globalStackScreenOptions,
+    headerStyle: { backgroundColor: "#fff" },
+    headerTitleStyle: { color: "black", fontFamily: "OtomanopeeOne" },
+    headerTintColor: "black",
+};
+
+const stackScreenOption2: StackNavigationOptions = {
+    ...globalStackScreenOptions,
+    headerStyle: { backgroundColor: "#3f7de0" },
+    headerTitleStyle: { color: "white", fontFamily: "OtomanopeeOne" },
+    headerTintColor: "white",
+};
+
 const HomeStack = () => {
-    const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+    const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null);
     useEffect(() => {
         AsyncStorage.getItem("alreadyLaunched").then((value) => {
             if (value === null) {
@@ -41,7 +55,7 @@ const HomeStack = () => {
     } else if (isFirstLaunch === true) {
         return (
             <Stack.Navigator
-                screenOptions={AllStackScreenOption}
+                screenOptions={stackScreenOption1}
                 initialRouteName="GetStarted"
             >
                 <Stack.Screen name="GetStarted" component={GetStartedScreen} />
@@ -55,7 +69,7 @@ const HomeStack = () => {
     } else {
         return (
             <Stack.Navigator
-                screenOptions={AllStackScreenOption}
+                screenOptions={stackScreenOption1}
                 initialRouteName="Home"
             >
                 <Stack.Screen name="Home" component={HomeScreen} />
@@ -68,11 +82,22 @@ const HomeStack = () => {
     }
 };
 
+const AuthenticationStack = () => {
+    return (
+        <Stack.Navigator
+            screenOptions={stackScreenOption2}
+            initialRouteName="Login"
+        >
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+        </Stack.Navigator>
+    );
+};
 
 const AboutStack = () => {
     return (
         <Stack.Navigator
-            screenOptions={AllStackScreenOption}
+            screenOptions={stackScreenOption1}
             initialRouteName="About"
         >
             <Stack.Screen name="About" component={AboutScreen} />
@@ -83,33 +108,21 @@ const AboutStack = () => {
 const SettingsStack = () => {
     return (
         <Stack.Navigator
-            screenOptions={AllStackScreenOption}
+            screenOptions={stackScreenOption1}
             initialRouteName="Settings"
         >
             <Stack.Screen name="Settings" component={SettingsScreen} />
-            <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
-            <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
-            <Stack.Screen
-                name="ChangePhoneNumber"
-                component={ChangePhoneNumberScreen}
-            />
-        </Stack.Navigator>
-    );
-};
-const AuthenticationStack = () => {
-    return (
-        <Stack.Navigator
-            screenOptions={{
-                headerStyle: { backgroundColor: "#3f7de0" },
-                headerTitleStyle: { color: "white" },
-                headerTintColor: "white",
-                headerBackTitle: "Back",
-                headerTitleAlign: "center",
-            }}
-            initialRouteName="Login"
-        >
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Group>
+                <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
+                <Stack.Screen
+                    name="ChangeEmail"
+                    component={ChangeEmailScreen}
+                />
+                <Stack.Screen
+                    name="ChangePhoneNumber"
+                    component={ChangePhoneNumberScreen}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     );
 };
@@ -117,7 +130,7 @@ const AuthenticationStack = () => {
 const ContactStack = () => {
     return (
         <Stack.Navigator
-            screenOptions={AllStackScreenOption}
+            screenOptions={stackScreenOption1}
             initialRouteName="Contact"
         >
             <Stack.Screen name="Contact" component={ContactScreen} />

@@ -9,17 +9,20 @@ import {
     ScrollView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import PropTypes from "prop-types";
+import globalStyles from "../globalStyles";
 import { Card } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
-export default function AboutScreen({ navigation }) {
+const AboutScreen = () => {
+    const navigation = useNavigation();
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "About Me!!",
             headerLeft: () => (
                 <SafeAreaView style={{ flex: 1 }}>
                     <TouchableOpacity
-                        style={{ alignItems: "flex-start", margin: 20 }}
+                        style={globalStyles.headerIcon}
                         onPress={navigation.goBack}
                     >
                         <AntDesign name="arrowleft" size={24} />
@@ -28,6 +31,7 @@ export default function AboutScreen({ navigation }) {
             ),
         });
     }, [navigation]);
+
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
@@ -35,33 +39,23 @@ export default function AboutScreen({ navigation }) {
                 <Card>
                     <Card.Title>So you want to know about Me?</Card.Title>
                     <Card.Divider />
-                    <Text style={styles.content}>
-                        My name is JONAK ADIPTA KALITA. I am a student in
-                        Kendriya Vidyalaya Mangaldoi, I am currently studying in
-                        standard '8th'. I am a Coder and also a 'Home Game
-                        Developer'. I code for fun but sometimes I also teach
-                        some of my colleagues some 'Python'. I love Python and
-                        JavaScript the most. I am a Youtuber too. I love to play
-                        Games such as NFS, COD, AC, Among Us, GTA, etc. I am a
-                        huge fan of Anime and watched 'Pokemon', 'One Piece',
-                        'Beyblade', 'DBG'.
+                    <Text style={[globalStyles.font, styles.content]}>
+                       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi assumenda veritatis earum expedita itaque cum hic rerum? Molestias inventore unde recusandae accusantium dolor alias facilis earum aperiam ab? Incidunt, quos.
                     </Text>
                 </Card>
             </ScrollView>
         </View>
     );
-}
-
-AboutScreen.propTypes = {
-    navigation: PropTypes.object.isRequired,
 };
+
+export default AboutScreen;
 
 const styles = StyleSheet.create({
     container: {
         marginBottom: 10,
     },
     content: {
-        fontSize: 20,
+        fontSize: 16,
         color: "#594d4c",
     },
 });

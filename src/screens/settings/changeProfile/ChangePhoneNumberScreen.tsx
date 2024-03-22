@@ -1,26 +1,29 @@
 import React, { useLayoutEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-    View,
-    StyleSheet,
-    SafeAreaView,
-    TouchableOpacity,
-    Alert,
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Input, Button } from "react-native-elements";
 import { auth, db } from "../../../firebase";
 import firebase from "firebase";
-import PropTypes from "prop-types";
+import { useAuthState } from "react-firebase-hooks/auth";
+import pushPrivateNotification from "../../../notify/privateNotification";
+import globalStyles from "../../../globalStyles";
+import LoadingIndicator from "../../../components/Loading";
+import errorAlertShower from "../../../utils/alertShowers/errorAlertShower";
+import messageAlertShower from "../../../utils/alertShowers/messageAlertShower";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ChangePhoneNumberScreen({ navigation }) {
+const ChangePhoneNumberScreen = () => {
+    const navigation: any = useNavigation();
+    const [user, userLoading, userError] = useAuthState(auth);
     const [previousPhoneNumber, setPreviousPhoneNumber] = useState(
-        auth?.currentUser?.phoneNumber
+        user?.phoneNumber
     );
     const [phoneNumber, setPhoneNumber] = useState("");
+
     const changePhoneNumber = () => {
         if (phoneNumber === "") {
-            Alert.alert(
+            messageAlertShower(
                 "Value not Filled!!",
                 "Please Enter all the Values in the Form!!",
                 [
@@ -31,7 +34,7 @@ export default function ChangePhoneNumberScreen({ navigation }) {
                 ]
             );
         } else if (phoneNumber === previousPhoneNumber) {
-            Alert.alert(
+            messageAlertShower(
                 "Value same as Previous!!",
                 "Its the same Phone Number as your Previous!!",
                 [
@@ -42,21 +45,27 @@ export default function ChangePhoneNumberScreen({ navigation }) {
                 ]
             );
         } else {
-            //TODO: Change or Set Phone Number
-            db.collection("privateNotifications")
-                .add({
-                    title: "Phone Number Changed Successfully!!",
-                    message: `Your Phone Number has been Successfully Changed to ${phoneNumber} from ${previousPhoneNumber}!!`,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    user: auth?.currentUser?.email,
+            //TODO: Change Phone Number
+            pushPrivateNotification(user.uid!, {
+                title: "Phone Number Changed Successfully!!",
+                message: `Your Phone Number has been Successfully Changed to ${phoneNumber} from ${previousPhoneNumber}!!`,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+                .then(() => {
+                    db.collection("users").doc(user?.uid).set(
+                        {
+                            phoneNumber: phoneNumber,
+                        },
+                        { merge: true }
+                    );
                 })
                 .then(() => {
                     setPhoneNumber("");
                     setPreviousPhoneNumber(phoneNumber);
-                    navigation.jumpTo("Home");
+                    navigation.jumpTo("HomeDrawer");
                 })
                 .then(() => {
-                    Alert.alert(
+                    messageAlertShower(
                         "Phone Number Changed Successfully!!",
                         "Your Phone Number is Successfully Changed!!",
                         [
@@ -68,29 +77,22 @@ export default function ChangePhoneNumberScreen({ navigation }) {
                     );
                 })
                 .catch((error) => {
-                    Alert.alert("Error Occured!!", error.message, [
-                        {
-                            text: "OK",
-                            onPress: () => {},
-                        },
-                    ]);
+                    errorAlertShower(error);
                 });
         }
     };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: `${
-                auth?.currentUser.phoneNumber
+                user?.phoneNumber
                     ? "Change your Phone Number!!"
                     : "Set your Phone Number!!"
             }`,
             headerLeft: () => (
                 <SafeAreaView style={{ flex: 1 }}>
                     <TouchableOpacity
-                        style={{
-                            alignItems: "flex-start",
-                            margin: 20,
-                        }}
+                        style={globalStyles.headerIcon}
                         onPress={navigation.goBack}
                     >
                         <AntDesign name="arrowleft" size={24} />
@@ -99,6 +101,18 @@ export default function ChangePhoneNumberScreen({ navigation }) {
             ),
         });
     }, [navigation]);
+
+    if (userError) errorAlertShower(userError);
+
+    if (userLoading) {
+        return (
+            <LoadingIndicator
+                dimensions={{ width: 70, height: 70 }}
+                containerStyle={{ flex: 1 }}
+            />
+        );
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
@@ -106,24 +120,22 @@ export default function ChangePhoneNumberScreen({ navigation }) {
                 <Input
                     placeholder="Phone Number (Use Country Code)"
                     autoFocus
-                    type="text"
-                    style={styles.inputBar}
+                    inputStyle={[globalStyles.inputBar, styles.inputBar]}
                     value={phoneNumber}
                     onChangeText={(text) => setPhoneNumber(text)}
+                    autoCompleteType={"tel"}
                 />
             </View>
             <Button
-                style={styles.button}
+                containerStyle={[globalStyles.button, styles.button]}
                 title="Upgrade"
                 onPress={changePhoneNumber}
             />
         </View>
     );
-}
-
-ChangePhoneNumberScreen.propTypes = {
-    navigation: PropTypes.object.isRequired,
 };
+
+export default ChangePhoneNumberScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -139,4 +151,5 @@ const styles = StyleSheet.create({
         width: 200,
         marginTop: 10,
     },
+    inputBar: {},
 });

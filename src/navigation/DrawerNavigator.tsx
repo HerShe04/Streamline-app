@@ -4,8 +4,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AntDesign, Entypo } from "@expo/vector-icons";
-import CustomDrawer from "../custom/Drawer";
-import PropTypes from "prop-types";
+import CustomDrawer from "../components/Drawer";
+import errorAlertShower from "../utils/alertShowers/errorAlertShower";
 
 import {
     HomeStack,
@@ -17,20 +17,37 @@ import {
 
 const Drawer = createDrawerNavigator();
 
-export default function DrawerNavigator() {
-    const [user] = useAuthState(auth);
+const DrawerNavigator = () => {
+    const [user, , userError] = useAuthState(auth);
     const dimensions = useWindowDimensions();
     const isLargeScreen = dimensions.width >= 768;
+
+    if (userError) errorAlertShower(userError);
+
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawer {...props} />}
-            drawerType={isLargeScreen ? "permanent" : "front"}
-            drawerStyle={isLargeScreen ? null : { width: "65%" }}
+            defaultStatus="closed"
+            screenOptions={{
+                drawerType: isLargeScreen ? "permanent" : "front",
+                drawerStyle: isLargeScreen ? null : { width: "65%" },
+                headerShown: false,
+                drawerLabelStyle: { fontSize: 14 },
+                drawerActiveBackgroundColor: "#F1F1F1",
+                drawerActiveTintColor: "#000000",
+                drawerInactiveTintColor: "#818181",
+                drawerItemStyle: {
+                    marginLeft: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 10,
+                },
+            }}
         >
             <Drawer.Screen
-                name="Home"
+                name="HomeDrawer"
                 component={HomeStack}
                 options={{
+                    drawerLabel: "Home",
                     drawerIcon: ({ color, size }) => (
                         <AntDesign
                             name="home"
@@ -41,9 +58,10 @@ export default function DrawerNavigator() {
                 }}
             />
             <Drawer.Screen
-                name="About"
+                name="AboutDrawer"
                 component={AboutStack}
                 options={{
+                    drawerLabel: "About",
                     drawerIcon: ({ color, size }) => (
                         <AntDesign
                             name="exclamationcircleo"
@@ -54,9 +72,10 @@ export default function DrawerNavigator() {
                 }}
             />
             <Drawer.Screen
-                name="Contact"
+                name="ContactDrawer"
                 component={ContactStack}
                 options={{
+                    drawerLabel: "Contact",
                     drawerIcon: ({ color, size }) => (
                         <AntDesign
                             name="phone"
@@ -68,9 +87,10 @@ export default function DrawerNavigator() {
             />
             {!user ? (
                 <Drawer.Screen
-                    name="Login"
+                    name="AuthDrawer"
                     component={AuthenticationStack}
                     options={{
+                        drawerLabel: "Login",
                         drawerIcon: ({ color, size }) => (
                             <Entypo
                                 name="login"
@@ -82,9 +102,10 @@ export default function DrawerNavigator() {
                 />
             ) : (
                 <Drawer.Screen
-                    name="Profile"
+                    name="ProfileDrawer"
                     component={SettingsStack}
                     options={{
+                        drawerLabel: "Profile",
                         drawerIcon: ({ color, size }) => (
                             <AntDesign
                                 name="setting"
@@ -97,9 +118,6 @@ export default function DrawerNavigator() {
             )}
         </Drawer.Navigator>
     );
-}
-
-DrawerNavigator.propTypes = {
-    color: PropTypes.string,
-    size: PropTypes.number,
 };
+
+export default DrawerNavigator;

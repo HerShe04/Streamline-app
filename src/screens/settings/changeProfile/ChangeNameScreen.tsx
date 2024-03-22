@@ -1,26 +1,27 @@
 import React, { useLayoutEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-    View,
-    StyleSheet,
-    SafeAreaView,
-    TouchableOpacity,
-    Alert,
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Input, Button } from "react-native-elements";
 import { db, auth } from "../../../firebase";
 import firebase from "firebase";
-import PropTypes from "prop-types";
+import globalStyles from "../../../globalStyles";
+import LoadingIndicator from "../../../components/Loading";
+import { useAuthState } from "react-firebase-hooks/auth";
+import pushPrivateNotification from "../../../notify/privateNotification";
+import errorAlertShower from "../../../utils/alertShowers/errorAlertShower";
+import messageAlertShower from "../../../utils/alertShowers/messageAlertShower";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ChangeNameScreen({ navigation }) {
-    const [previousName, setPreviousName] = useState(
-        auth?.currentUser?.displayName
-    );
+const ChangeNameScreen = () => {
+    const navigation: any = useNavigation();
+    const [user, userLoading, userError] = useAuthState(auth);
+    const [previousName, setPreviousName] = useState(user?.displayName);
     const [name, setName] = useState("");
+
     const changeName = () => {
         if (name === "") {
-            Alert.alert(
+            messageAlertShower(
                 "Value not Filled!!",
                 "Please Enter all the Values in the Form!!",
                 [
@@ -31,7 +32,7 @@ export default function ChangeNameScreen({ navigation }) {
                 ]
             );
         } else if (name === previousName) {
-            Alert.alert(
+            messageAlertShower(
                 "Value same as Previous!!",
                 "Its the same Name as your Previous!!",
                 [
@@ -42,26 +43,32 @@ export default function ChangeNameScreen({ navigation }) {
                 ]
             );
         } else {
-            auth.currentUser
-                .updateProfile({
-                    displayName: name,
-                })
+            user?.updateProfile({
+                displayName: name,
+            })
                 .then(() => {
-                    db.collection("privateNotifications").add({
+                    pushPrivateNotification(user?.uid, {
                         title: "Name Changed Successfully!!",
                         message: `Your Name has been Successfully Changed to ${name} from ${previousName}!!`,
                         timestamp:
                             firebase.firestore.FieldValue.serverTimestamp(),
-                        user: auth?.currentUser?.email,
                     });
+                })
+                .then(() => {
+                    db.collection("users").doc(user?.uid).set(
+                        {
+                            displayName: name,
+                        },
+                        { merge: true }
+                    );
                 })
                 .then(() => {
                     setName("");
                     setPreviousName(name);
-                    navigation.jumpTo("Home");
+                    navigation.jumpTo("HomeDrawer");
                 })
                 .then(() => {
-                    Alert.alert(
+                    messageAlertShower(
                         "Name Changed Successfully!!",
                         "Your Name is Successfully Changed!!",
                         [
@@ -73,25 +80,18 @@ export default function ChangeNameScreen({ navigation }) {
                     );
                 })
                 .catch((error) => {
-                    Alert.alert("Error Occured!!", error.message, [
-                        {
-                            text: "OK",
-                            onPress: () => {},
-                        },
-                    ]);
+                    errorAlertShower(error);
                 });
         }
     };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Change your Name!!",
             headerLeft: () => (
                 <SafeAreaView style={{ flex: 1 }}>
                     <TouchableOpacity
-                        style={{
-                            alignItems: "flex-start",
-                            margin: 20,
-                        }}
+                        style={globalStyles.headerIcon}
                         onPress={navigation.goBack}
                     >
                         <AntDesign name="arrowleft" size={24} />
@@ -100,6 +100,18 @@ export default function ChangeNameScreen({ navigation }) {
             ),
         });
     }, [navigation]);
+
+    if (userError) errorAlertShower(userError);
+
+    if (userLoading) {
+        return (
+            <LoadingIndicator
+                dimensions={{ width: 70, height: 70 }}
+                containerStyle={{ flex: 1 }}
+            />
+        );
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
@@ -107,24 +119,22 @@ export default function ChangeNameScreen({ navigation }) {
                 <Input
                     placeholder="Name"
                     autoFocus
-                    type="text"
-                    style={styles.inputBar}
+                    inputStyle={[globalStyles.inputBar, styles.inputBar]}
                     value={name}
                     onChangeText={(text) => setName(text)}
+                    autoCompleteType={"name"}
                 />
             </View>
             <Button
-                style={styles.button}
+                containerStyle={[globalStyles.button, styles.button]}
                 title="Upgrade"
                 onPress={changeName}
             />
         </View>
     );
-}
-
-ChangeNameScreen.propTypes = {
-    navigation: PropTypes.object.isRequired,
 };
+
+export default ChangeNameScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -137,7 +147,7 @@ const styles = StyleSheet.create({
         width: 350,
     },
     button: {
-        width: 200,
         marginTop: 10,
     },
+    inputBar: {},
 });
