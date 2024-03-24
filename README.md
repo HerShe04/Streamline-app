@@ -50,10 +50,10 @@ Figma Design: https://bit.ly/48SQ3uR
 ## Roadmap 
 * [x] Designing
 * [x] Login/SignUp/Signout
-* [ ] ToDo with CRUD
+* [x] ToDo with CRUD
 * [ ] Create/Scan QRCode
 * [ ] Unit Conversion
-* [ ] FireBase/Firestore Setup 
+* [x] FireBase/Firestore Setup 
 * [ ] Email Verification/Realtime Database Sync 
 * [ ] Enhance Security
 * [ ] Fix UI and make Responsive
