@@ -54,7 +54,7 @@ Figma Design: https://bit.ly/48SQ3uR
 * [ ] Create/Scan QRCode
 * [ ] Unit Conversion
 * [x] FireBase/Firestore Setup 
-* [ ] Email Verification/Realtime Database Sync 
+* [x] Email Verification/Realtime Database Sync 
 * [ ] Enhance Security
 * [ ] Fix UI and make Responsive
 * [ ] Complete within 2 weeks
