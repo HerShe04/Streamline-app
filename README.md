@@ -52,7 +52,7 @@ Figma Design: https://bit.ly/48SQ3uR
 * [x] Login/SignUp/Signout
 * [x] ToDo with CRUD
 * [ ] Create/Scan QRCode
-* [ ] Unit Conversion
+* [x] Unit Conversion
 * [x] FireBase/Firestore Setup 
 * [x] Email Verification/Realtime Database Sync 
 * [ ] Enhance Security
